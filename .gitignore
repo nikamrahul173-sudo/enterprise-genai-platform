@@ -1,0 +1,82 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# =====================================
+# Python Virtual Environment
+# =====================================
+.venv/
+venv/
+env/
+
+# =====================================
+# Python Cache
+# =====================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =====================================
+# Secrets and Credentials
+# =====================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# =====================================
+# SQLite Databases
+# =====================================
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =====================================
+# ChromaDB Local Vector Database
+# =====================================
+chroma_db/
+
+# =====================================
+# Uploaded and Local Documents
+# =====================================
+data/uploads/
+data/*.pdf
+data/*.txt
+data/*.csv
+
+# =====================================
+# Local Logs and Temporary Files
+# =====================================
+*.log
+logs/
+tmp/
+temp/
+
+# =====================================
+# Editor and Operating System
+# =====================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =====================================
+# Build Files
+# =====================================
+build/
+dist/
+*.egg-info/
+
+
+
+# Local application data and uploaded documents
+data/

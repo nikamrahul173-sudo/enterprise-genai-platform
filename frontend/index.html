@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enterprise AI IT Support Copilot</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <h2>IT Copilot</h2>
+                <p>Enterprise AI Assistant</p>
+            </div>
+
+            <nav class="navigation">
+
+                <button
+                    type="button"
+                    class="nav-item active"
+                    data-page="chat"
+                >
+                    💬 AI Assistant
+                </button>
+
+                <button
+                    type="button"
+                    class="nav-item"
+                    data-page="tickets"
+                >
+                    🎫 IT Tickets
+                </button>
+
+                <button
+                    type="button"
+                    class="nav-item"
+                    data-page="documents"
+                >
+                    📁 Knowledge Base
+                </button>
+
+                <button
+                    type="button"
+                    class="nav-item"
+                    data-page="dashboard"
+                >
+                    📊 Dashboard
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>Local AI • Ollama + RAG</p>
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Content
+        ====================================== -->
+        <main class="main-content">
+
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div>
+                    <h1>Enterprise AI IT Support Copilot</h1>
+                    <p>
+                        Desktop Support • VPN • Active Directory •
+                        Microsoft 365
+                    </p>
+                </div>
+
+                <span class="status">● Local AI</span>
+            </header>
+
+
+            <!-- =====================================
+                 AI Chat Page
+            ====================================== -->
+            <section id="chat-page" class="page active">
+
+                <div class="page-heading">
+                    <h2>AI Knowledge Assistant</h2>
+                    <p>
+                        Ask questions about IT policies and
+                        troubleshooting procedures.
+                    </p>
+                </div>
+
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message assistant">
+                        Hi! I'm your IT Support Copilot.
+                        Ask me about company policies, VPN access,
+                        laptop requests, or IT support hours.
+                    </div>
+                </div>
+
+                <form id="chat-form" class="chat-form">
+
+                    <input
+                        type="text"
+                        id="chat-input"
+                        placeholder="Ask an IT support question..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        id="send-button"
+                    >
+                        Send
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- =====================================
+                 IT Tickets Page
+            ====================================== -->
+            <section id="tickets-page" class="page">
+
+                <div class="page-heading">
+                    <h2>IT Incident Management</h2>
+                    <p>
+                        Manage Desktop, VPN, Active Directory,
+                        Windows/Linux Server, Azure and AWS incidents.
+                    </p>
+                </div>
+
+                <!-- Create Ticket -->
+                <div class="upload-panel">
+
+                    <h3>Create New IT Ticket</h3>
+
+                    <form id="ticket-form">
+
+                        <label for="ticket-title">
+                            Incident Title
+                        </label>
+
+                        <input
+                            type="text"
+                            id="ticket-title"
+                            placeholder="Example: Azure VM not responding"
+                            maxlength="150"
+                            required
+                        >
+
+                        <label for="ticket-description">
+                            Incident Description
+                        </label>
+
+                        <textarea
+                            id="ticket-description"
+                            placeholder="Describe the issue, impact and symptoms..."
+                            rows="5"
+                            maxlength="3000"
+                            required
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            id="create-ticket-button"
+                        >
+                            Create Ticket
+                        </button>
+
+                    </form>
+
+                    <p id="ticket-status" role="status"></p>
+
+                </div>
+
+                <!-- Ticket List -->
+                <div class="documents-panel">
+
+                    <div class="panel-heading">
+
+                        <h3>IT Incident Tickets</h3>
+
+                        <button
+                            type="button"
+                            id="refresh-tickets"
+                        >
+                            Refresh Tickets
+                        </button>
+
+                    </div>
+
+                    <div id="tickets-list">
+                        Tickets will appear here.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 Knowledge Base Page
+            ====================================== -->
+            <section id="documents-page" class="page">
+
+                <div class="page-heading">
+                    <h2>Knowledge Base</h2>
+                    <p>
+                        Upload company SOPs and manage indexed documents.
+                    </p>
+                </div>
+
+                <div class="upload-panel">
+
+                    <h3>Upload PDF</h3>
+
+                    <form id="upload-form">
+
+                        <input
+                            type="file"
+                            id="pdf-file"
+                            accept=".pdf,application/pdf"
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            id="upload-button"
+                        >
+                            Upload Document
+                        </button>
+
+                    </form>
+
+                    <p id="upload-status"></p>
+
+                </div>
+
+                <div class="documents-panel">
+
+                    <div class="panel-heading">
+
+                        <h3>Indexed Documents</h3>
+
+                        <button
+                            id="refresh-documents"
+                            type="button"
+                        >
+                            Refresh
+                        </button>
+
+                    </div>
+
+                    <div id="documents-list">
+                        Documents will appear here.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 Dashboard Analytics Page
+            ====================================== -->
+            <section id="dashboard-page" class="page">
+
+                <div class="page-heading">
+                    <h2>IT Operations Dashboard</h2>
+                    <p>
+                        Live incident and engineer review statistics
+                        from the SQLite database.
+                    </p>
+                </div>
+
+                <div class="documents-panel">
+
+                    <div class="panel-heading">
+
+                        <h3>Ticket Analytics</h3>
+
+                        <button
+                            type="button"
+                            id="refresh-dashboard"
+                        >
+                            Refresh Dashboard
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="dashboard-stats"
+                        class="dashboard-stats"
+                    >
+                        Loading dashboard...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
