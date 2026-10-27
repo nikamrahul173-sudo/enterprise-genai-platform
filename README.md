@@ -198,3 +198,53 @@ PDF document management and retrieval-augmented generation.
 IT incident statistics and review tracking.
 
 ![Dashboard](screenshots/dashboard.png)
+
+
+
+
+
+## Manual API Testing Results
+
+Core application workflows were manually tested using FastAPI Swagger UI (`http://127.0.0.1:8000/docs`).
+
+| Feature | Test Result |
+|---|---|
+| AI Chat using Ollama | Passed |
+| RAG-based Knowledge Base Chat | Passed |
+| Document Upload and Retrieval | Passed |
+| IT Ticket Creation | Passed |
+| AI Incident Analysis | Passed |
+| Engineer Review and Approval | Passed |
+| Ticket Status Lifecycle | Passed |
+| Dashboard Statistics | Passed |
+
+### Ticket Lifecycle Validation
+
+Test Ticket #6 (`VPN Disconnecting Frequently`) was used to validate the incident management workflow:
+
+1. Created a new IT support ticket.
+2. Generated AI-based incident analysis and troubleshooting recommendations.
+3. Saved engineer approval with review notes.
+4. Updated the ticket through Open → In Progress → Resolved → Closed.
+5. Verified the final ticket counts using the dashboard statistics API.
+
+### Final Dashboard Verification
+
+| Metric | Verified Value |
+|---|---:|
+| Total Tickets | 6 |
+| Open Tickets | 3 |
+| In Progress Tickets | 0 |
+| Resolved Tickets | 1 |
+| Closed Tickets | 2 |
+| Pending Reviews | 3 |
+| Approved Reviews | 3 |
+| Rejected Reviews | 0 |
+
+### Current Limitations
+
+- The application runs locally and has not been deployed to a production environment.
+- Testing was performed manually; automated regression tests are not yet implemented.
+- Authentication and role-based access control are not yet implemented.
+- AI-generated recommendations require human verification before real-world execution.
+- AI-suggested incident priority is not automatically applied to the ticket record.
