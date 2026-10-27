@@ -172,3 +172,29 @@ This is a local portfolio demonstration, not a production-ready enterprise incid
 ## Project Purpose
 
 This project demonstrates practical experience with local LLM integration, retrieval-augmented generation, REST API development, vector databases, structured AI output, SQLite persistence, and human-in-the-loop workflows.
+
+
+
+
+
+## Application Screenshots
+
+### AI Assistant
+Local AI-powered IT troubleshooting assistant.
+
+![AI Assistant](screenshots/ai-assistant.png)
+
+### Ticket Management
+AI-powered incident analysis, engineer review, and ticket lifecycle management.
+
+![Ticket Management](screenshots/ticket-management.png)
+
+### Knowledge Base
+PDF document management and retrieval-augmented generation.
+
+![Knowledge Base](screenshots/knowledge-base.png)
+
+### Dashboard
+IT incident statistics and review tracking.
+
+![Dashboard](screenshots/dashboard.png)
