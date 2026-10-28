@@ -1,4 +1,5 @@
-
+import os
+from starlette.middleware.base import BaseHTTPMiddleware
 from pathlib import Path
 from collections import Counter
 
@@ -10,6 +11,7 @@ from fastapi import (
 )
 
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from backend.app.services.llm_service import generate_answer
@@ -47,6 +49,41 @@ app = FastAPI(
 
 
 # =====================================
+# Public Demo Security
+# =====================================
+
+DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"
+
+class PublicDemoGuard(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        if DEMO_MODE:
+            path = request.url.path
+            method = request.method
+
+            # Block API operations that change stored data
+            blocked = (
+                method in {"POST", "PATCH", "PUT", "DELETE"}
+                and (
+                    path.startswith("/tickets")
+                    or path.startswith("/documents")
+                )
+            )
+
+            if blocked:
+                return JSONResponse(
+                    status_code=403,
+                    content={
+                        "detail": "This action is disabled in public demo mode."
+                    },
+                )
+
+        return await call_next(request)
+
+
+app.add_middleware(PublicDemoGuard)
+
+
+# =====================================
 # Initialize Database
 # =====================================
 
@@ -63,7 +100,10 @@ initialize_database()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["null"],
+    allow_origins=[
+    "null",
+    "https://nikamrahul-enterprise-ai-it-copilot.hf.space",
+],
     allow_credentials=False,
     allow_methods=[
         "GET",
