@@ -1,4 +1,4 @@
-import os
+﻿import os
 from starlette.middleware.base import BaseHTTPMiddleware
 from pathlib import Path
 from collections import Counter
@@ -100,10 +100,7 @@ initialize_database()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-    "null",
-    "https://nikamrahul-enterprise-ai-it-copilot.hf.space",
-],
+    allow_origins=["null", "http://127.0.0.1:5500", "http://localhost:5500", "https://nikamrahul-enterprise-ai-it-copilot.hf.space"],
     allow_credentials=False,
     allow_methods=[
         "GET",
@@ -630,3 +627,5 @@ def get_dashboard_stats():
         "approved_reviews": approved_reviews,
         "rejected_reviews": rejected_reviews,
     }
+
+

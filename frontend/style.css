@@ -505,3 +505,24 @@ button:disabled {
     color: #f8fafc;
     margin: 0;
 }
+
+
+
+
+
+
+
+
+
+/* Welcome message: horizontally centered */
+.message.welcome-message {
+    align-self: center;
+    text-align: center;
+    max-width: 80%;
+}
+
+/* Welcome message text alignment only */
+#chat-messages .welcome-message {
+    text-align: center;
+    white-space: normal;
+}
