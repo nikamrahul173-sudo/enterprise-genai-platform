@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8003";
 
 // Sidebar navigation
 const navButtons = document.querySelectorAll(".nav-item");
@@ -240,6 +240,7 @@ const refreshTicketsButton = document.getElementById("refresh-tickets");
 
 // Show saved AI analysis
 function displayTicketAnalysis(container, rawAnalysis) {
+
     let analysis;
 
     try {
@@ -264,7 +265,7 @@ function displayTicketAnalysis(container, rawAnalysis) {
 
     const fields = [
         ["Category", analysis.category],
-        ["Suggested Priority", analysis.suggested_priority],
+        ["Suggested Priority", (analysis.suggested_priority || analysis.priority)],
         ["Reasoning", analysis.reasoning],
         ["Escalation", analysis.escalation]
     ];
@@ -353,16 +354,29 @@ async function loadTickets() {
 
         ticketsList.replaceChildren();
 
-        if (!data.tickets || data.tickets.length === 0) {
+        if (
+            (Array.isArray(data) ? data : (data.tickets || [])).length === 0
+        ) {
             ticketsList.textContent = "No tickets created yet.";
             return;
         }
 
         const summary = document.createElement("p");
-        summary.textContent = `Total tickets: ${data.total_tickets}`;
+        summary.textContent = `Total tickets: ${
+            Array.isArray(data)
+                ? data.length
+                : (data.total_tickets ?? (data.tickets || []).length)
+        }`;
         ticketsList.appendChild(summary);
 
-        data.tickets.forEach((ticket) => {
+        (Array.isArray(data) ? data : (data.tickets || [])).forEach((ticket) => {
+        if (typeof ticket.ai_analysis === "string") {
+            try {
+                ticket.ai_analysis = JSON.parse(ticket.ai_analysis);
+            } catch (error) {
+                ticket.ai_analysis = null;
+            }
+        }
             const card = document.createElement("div");
             card.className = "ticket-card";
 
@@ -375,8 +389,8 @@ async function loadTickets() {
             const status = document.createElement("p");
             status.textContent =
                 `Status: ${ticket.status} | ` +
-                `Category: ${ticket.category} | ` +
-                `Priority: ${ticket.priority}`;
+                `Category: ${(ticket.category || ticket.ai_analysis?.category || 'Unclassified')} | ` +
+                `Priority: ${(ticket.priority || ticket.ai_analysis?.priority || 'Not assigned')}`;
 
             const analyzeButton = document.createElement("button");
             analyzeButton.type = "button";
@@ -499,7 +513,7 @@ ticketForm.addEventListener("submit", async (event) => {
         const result = await response.json();
 
         ticketStatus.textContent =
-            `Ticket #${result.ticket.id} created successfully!`;
+            `Ticket #${(result.ticket || result).id} created successfully!`;
 
         ticketForm.reset();
 
@@ -763,7 +777,7 @@ function createTicketStatusPanel(ticket) {
                 const result = await response.json();
 
                 alert(
-                    `Ticket #${ticket.id}: ${result.new_status}`
+                    `Ticket #${ticket.id}: ${(result.new_status || result.status)}`
                 );
 
                 // Refresh ticket cards with updated status
@@ -817,6 +831,40 @@ async function loadDashboardStats() {
         }
 
         const stats = await response.json();
+
+        /* CLOUD REVIEW STATS COMPATIBILITY */
+        if (
+            stats.pending_reviews === undefined ||
+            stats.approved_reviews === undefined ||
+            stats.rejected_reviews === undefined
+        ) {
+            const ticketResponse = await fetch(`${API_URL}/tickets`);
+
+            if (ticketResponse.ok) {
+                const ticketData = await ticketResponse.json();
+                const tickets = Array.isArray(ticketData)
+                    ? ticketData
+                    : (ticketData.tickets || []);
+
+                const analyzedTickets = tickets.filter(
+                    (ticket) => Boolean(ticket.ai_analysis)
+                );
+
+                stats.pending_reviews = analyzedTickets.filter(
+                    (ticket) =>
+                        !ticket.review_status ||
+                        ticket.review_status === "Pending"
+                ).length;
+
+                stats.approved_reviews = analyzedTickets.filter(
+                    (ticket) => ticket.review_status === "Approved"
+                ).length;
+
+                stats.rejected_reviews = analyzedTickets.filter(
+                    (ticket) => ticket.review_status === "Rejected"
+                ).length;
+            }
+        }
 
         const cards = [
             ["Total Tickets", stats.total_tickets],

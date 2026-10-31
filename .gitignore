@@ -79,4 +79,39 @@ dist/
 
 
 # Local application data and uploaded documents
-data/
+data/*.db-*
+*.backup
+*-code-review.txt
+*-backend-review.txt
+sample_it_policy.pdf
+
+# Cloud deployment safety
+.env
+.env.*
+*.db
+*.sqlite
+*.sqlite3
+*.backup
+*.integration-backup
+*.frontend-backup
+*.ticket-fix-backup
+*.final-ticket-backup
+*.ui-polish-backup
+*.safe-backup
+*.before-*
+*-code-review.txt
+*-backend-review.txt
+frontend-contract.txt
+sample_it_policy.pdf
+__pycache__/
+.pytest_cache/
+.venv/
+
+# Temporary integration and debugging files
+*.ticket-reference-backup
+*.ui-polish-backup
+*.safe-backup
+*.before-*
+*.integration-backup
+
+*.ticket-reference-backup
