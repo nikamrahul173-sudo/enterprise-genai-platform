@@ -939,3 +939,51 @@ document
     ?.addEventListener("click", () => {
         loadDashboardStats();
     });
+
+
+// PUBLIC_DEMO_READ_ONLY_V1
+// Public cloud visitors can browse tickets but cannot modify them.
+const PUBLIC_DEMO_READ_ONLY =
+    API_URL.includes("enterprise-genai-platform-6xrg.onrender.com");
+
+function applyPublicDemoReadOnly() {
+    if (!PUBLIC_DEMO_READ_ONLY) return;
+
+    const blockedLabels = [
+        "Create Ticket",
+        "Analyze with AI",
+        "Start Progress",
+        "Resolve Ticket",
+        "Close Ticket",
+        "Approve",
+        "Reject",
+        "Upload PDF",
+        "Delete"
+    ];
+
+    document.querySelectorAll("button").forEach(button => {
+        const label = button.textContent.trim();
+
+        if (blockedLabels.some(blocked =>
+            label === blocked || label.startsWith(blocked + " ")
+        )) {
+            button.disabled = true;
+            button.title = "Public demo is read-only";
+            button.style.opacity = "0.5";
+            button.style.cursor = "not-allowed";
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    applyPublicDemoReadOnly();
+
+    const observer = new MutationObserver(() => {
+        applyPublicDemoReadOnly();
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
