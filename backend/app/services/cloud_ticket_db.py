@@ -1,4 +1,5 @@
-﻿import os
+from contextlib import contextmanager
+import os
 import sqlite3
 from pathlib import Path
 
@@ -8,12 +9,18 @@ DB_PATH = Path(
 )
 
 
+@contextmanager
 def get_connection():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     connection = sqlite3.connect(str(DB_PATH), timeout=10)
     connection.row_factory = sqlite3.Row
-    return connection
+
+    try:
+        with connection:
+            yield connection
+    finally:
+        connection.close()
 
 
 def initialize_cloud_tickets():
@@ -60,6 +67,9 @@ def get_cloud_ticket(ticket_id):
 def list_cloud_tickets():
     initialize_cloud_tickets()
 
+    if os.getenv("PUBLIC_DEMO_MODE", "0") == "1":
+        seed_demo_tickets()
+
     with get_connection() as connection:
         rows = connection.execute(
             "SELECT * FROM cloud_tickets ORDER BY id DESC"
@@ -90,3 +100,54 @@ def update_cloud_ticket_status(ticket_id, status):
             return None
 
     return get_cloud_ticket(ticket_id)
+
+
+def seed_demo_tickets():
+    """Populate an empty public-demo database with synthetic IT tickets."""
+    demo_tickets = [
+        (
+            "VPN connection fails on Windows 11",
+            "Demo: Employee cannot connect to the corporate VPN after a password reset.",
+            "Open",
+        ),
+        (
+            "Outlook emails not syncing",
+            "Demo: Outlook desktop client is not receiving new Microsoft 365 emails.",
+            "In Progress",
+        ),
+        (
+            "Active Directory account locked",
+            "Demo: User account locked after repeated unsuccessful sign-in attempts.",
+            "Resolved",
+        ),
+        (
+            "Laptop running slowly",
+            "Demo: Windows laptop has high CPU usage and slow startup performance.",
+            "Open",
+        ),
+        (
+            "Microsoft 365 MFA enrollment issue",
+            "Demo: Employee needs assistance registering a new authenticator device.",
+            "Closed",
+        ),
+    ]
+
+    initialize_cloud_tickets()
+
+    with get_connection() as connection:
+        existing = connection.execute(
+            "SELECT COUNT(*) FROM cloud_tickets"
+        ).fetchone()[0]
+
+        if existing > 0:
+            return 0
+
+        connection.executemany(
+            """
+            INSERT INTO cloud_tickets (title, description, status)
+            VALUES (?, ?, ?)
+            """,
+            demo_tickets,
+        )
+
+    return len(demo_tickets)
