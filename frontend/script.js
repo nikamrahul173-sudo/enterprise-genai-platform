@@ -57,7 +57,7 @@ chatForm.addEventListener("submit", async (event) => {
     sendButton.textContent = "Thinking...";
 
     try {
-        const response = await fetch(`${API_URL}/rag/chat`, {
+        const response = await fetch(`${API_URL}/chat`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -73,7 +73,7 @@ chatForm.addEventListener("submit", async (event) => {
 
         const data = await response.json();
 
-        let answer = data.answer || "No answer received.";
+        let answer = data.answer || data.response || data.reply || "No answer received.";
 
         if (data.sources && data.sources.length > 0) {
             const sourceNames = [
@@ -93,7 +93,7 @@ chatForm.addEventListener("submit", async (event) => {
 
     } catch (error) {
         addMessage(
-            "Could not connect to the AI backend. Please check that FastAPI and Ollama are running.",
+            "Could not connect to the cloud AI service. Please try again.",
             "assistant"
         );
 
@@ -132,18 +132,22 @@ async function loadDocuments() {
 
         documentsList.replaceChildren();
 
-        if (!data.documents || data.documents.length === 0) {
+        const documents = Array.isArray(data)
+            ? data
+            : (data.documents || []);
+
+        if (documents.length === 0) {
             documentsList.textContent = "No documents uploaded yet.";
             return;
         }
 
         const summary = document.createElement("p");
         summary.textContent =
-            `Total documents: ${data.total_documents} | Total chunks: ${data.total_chunks}`;
+            `Total documents: ${documents.length}`;
 
         documentsList.appendChild(summary);
 
-        data.documents.forEach((documentInfo) => {
+        documents.forEach((documentInfo) => {
             const item = document.createElement("div");
             item.className = "document-item";
 
