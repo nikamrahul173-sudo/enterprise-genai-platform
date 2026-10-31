@@ -948,6 +948,20 @@ const PUBLIC_DEMO_READ_ONLY =
 
 function applyPublicDemoReadOnly() {
     if (!PUBLIC_DEMO_READ_ONLY) return;
+    const uploadInput = document.querySelector('#upload-form input[type="file"]');
+    const uploadButton = document.getElementById("upload-button");
+
+    if (uploadInput) {
+        uploadInput.disabled = true;
+        uploadInput.title = "Public demo is read-only";
+    }
+
+    if (uploadButton) {
+        uploadButton.disabled = true;
+        uploadButton.title = "Public demo is read-only";
+    }
+
+
 
     const blockedLabels = [
         "Create Ticket",
@@ -958,6 +972,7 @@ function applyPublicDemoReadOnly() {
         "Approve",
         "Reject",
         "Upload PDF",
+        "Upload Document",
         "Delete"
     ];
 
