@@ -9,6 +9,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://nikamrahul-enterprise-ai-it-copilot.static.hf.space",
         "https://nikamrahul-enterprise-ai-it-copilot.hf.space",
         "http://127.0.0.1:5500",
         "http://localhost:5500",
