@@ -1,4 +1,20 @@
 
+// Clean AI-generated Markdown for the existing plain-text chat UI.
+function formatAIAnswer(text) {
+    return String(text || "")
+        .replace(/\r\n/g, "\n")
+        .replace(/^\s*\|[\s:|-]+\|\s*$/gm, "")
+        .replace(/^\s*\|(.+)\|\s*$/gm, (_, cells) =>
+            cells.split("|").map(cell => cell.trim()).join("  |  ")
+        )
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .replace(/`([^`]+)`/g, "$1")
+        .replace(/^#{1,6}\s+/gm, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+}
+
+
 const API_URL = "https://enterprise-genai-platform-6xrg.onrender.com";
 
 // Sidebar navigation
@@ -89,7 +105,7 @@ chatForm.addEventListener("submit", async (event) => {
             }
         }
 
-        addMessage(answer, "assistant");
+        addMessage(formatAIAnswer(answer), "assistant");
 
     } catch (error) {
         addMessage(
