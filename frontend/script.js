@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:8003";
+const API_URL = "https://enterprise-genai-platform-6xrg.onrender.com";
 
 // Sidebar navigation
 const navButtons = document.querySelectorAll(".nav-item");

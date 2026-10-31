@@ -115,3 +115,5 @@ __pycache__/
 *.integration-backup
 
 *.ticket-reference-backup
+
+*.render-backup
