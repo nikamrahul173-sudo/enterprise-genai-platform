@@ -1,12 +1,62 @@
 # Enterprise AI IT Operations Copilot
 
+**AI-powered IT support and incident management — Local Ollama + Cloud Groq Demo**
+
+[Live Demo](https://huggingface.co/spaces/nikamrahul/enterprise-ai-it-copilot) | [GitHub Repository](https://github.com/nikamrahul173-sudo/enterprise-genai-platform) | [Backend Health](https://enterprise-genai-platform-6xrg.onrender.com/healthz)
+
+## Cloud Deployment (Public Demo)
+
+The project includes a publicly accessible AI IT Operations Copilot deployed using Hugging Face Spaces and Render.
+
+### Cloud Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript — Hugging Face Spaces |
+| Backend | Python, FastAPI — Render |
+| Cloud AI | Groq API |
+| Demo Database | SQLite |
+| Local AI | Ollama |
+| Local RAG | ChromaDB + Ollama Embeddings |
+
+### Public Demo Features
+
+- Groq-powered IT troubleshooting assistant.
+- Five synthetic IT support tickets.
+- Dashboard showing ticket statistics.
+- Read-only public ticket interface.
+- Knowledge Base page with document listing and disabled public uploads.
+
+### Current Limitations
+
+- Cloud PDF RAG is not yet verified as a working public demo feature.
+- No documents are currently indexed in the cloud Knowledge Base.
+- Render Free storage is not persistent across all restarts or redeployments.
+- Public ticket changes and document uploads require administrator authorization.
+- Full enterprise authentication, role-based access control, and comprehensive audit logging are not implemented.
+- AI recommendations require human verification.
+
+**Project status:** Working portfolio demonstration, not a production-ready enterprise platform.
+
+---
+
+
+
+
+
+
+
+
+
+# Enterprise AI IT Operations Copilot
+
 A local AI-powered IT incident management and knowledge assistant built using FastAPI, Ollama, ChromaDB, SQLite, and a JavaScript frontend.
 
 ## Overview
 
 Enterprise AI IT Operations Copilot is a portfolio project designed to demonstrate how Generative AI can assist IT support engineers with troubleshooting, knowledge retrieval, incident analysis, and human-reviewed ticket management.
 
-The application runs locally and uses Ollama for AI inference.
+The local application uses Ollama; the public cloud demo uses Groq for AI inference.
 
 ## Key Features
 
@@ -74,11 +124,11 @@ FastAPI Backend
 ### 1. Clone the repository
 
 ```powershell
-git clone https://github.com/YOUR_USERNAME/enterprise-genai-platform.git
+git clone https://github.com/nikamrahul173-sudo/enterprise-genai-platform.git
 cd enterprise-genai-platform
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username after creating the repository.
+
 
 ### 2. Create a virtual environment
 
@@ -243,8 +293,8 @@ Test Ticket #6 (`VPN Disconnecting Frequently`) was used to validate the inciden
 
 ### Current Limitations
 
-- The application runs locally and has not been deployed to a production environment.
-- Testing was performed manually; automated regression tests are not yet implemented.
+- The application has a deployed public demo, but it is not a production-ready enterprise system.
+- Local workflows were manually tested; a limited pytest suite exists, but comprehensive regression testing is pending.
 - Authentication and role-based access control are not yet implemented.
 - AI-generated recommendations require human verification before real-world execution.
 - AI-suggested incident priority is not automatically applied to the ticket record.
