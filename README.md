@@ -50,7 +50,7 @@ The project includes a publicly accessible AI IT Operations Copilot deployed usi
 
 # Enterprise AI IT Operations Copilot
 
-A local AI-powered IT incident management and knowledge assistant built using FastAPI, Ollama, ChromaDB, SQLite, and a JavaScript frontend.
+An AI-powered IT operations copilot featuring local Ollama-based RAG workflows and a deployed Groq-powered cloud demonstration.
 
 ## Overview
 
