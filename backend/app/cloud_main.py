@@ -498,3 +498,12 @@ from backend.app.services.cloud_security import (
 )
 
 app.add_middleware(PublicDemoSecurityMiddleware)
+
+
+
+# Seed bundled cloud knowledge articles when the API starts.
+from backend.app.services.cloud_rag_service import seed_cloud_knowledge
+
+@app.on_event("startup")
+def seed_cloud_knowledge_on_startup():
+    seed_cloud_knowledge()
