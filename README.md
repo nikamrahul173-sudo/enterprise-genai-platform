@@ -83,7 +83,9 @@ The local application uses Ollama; the public cloud demo uses Groq for AI infere
 | API Testing | Swagger UI |
 | Development Environment | VS Code, Windows |
 
-## Architecture
+ ## Architecture
+
+### Local Development Architecture
 
 ```text
 User
@@ -111,6 +113,30 @@ FastAPI Backend
             +----> Engineer Reviews
             +----> Ticket Status
 ```
+
+
+### Deployed Cloud Architecture
+
+```mermaid
+flowchart TD
+    U[User] --> F[Hugging Face Frontend]
+    F --> API[FastAPI on Render]
+    API --> CHAT[AI Chat]
+    CHAT --> G[Groq LLM]
+    API --> RAG[Cloud RAG]
+    RAG --> S[SQLite Keyword Search]
+    S --> KB[(Knowledge Chunks)]
+    RAG --> G
+    MD[Markdown IT Runbooks] --> SEED[Startup Indexing]
+    SEED --> KB
+    API --> T[Ticket APIs]
+    T --> DB[(SQLite Tickets)]
+```
+
+The deployed frontend runs on Hugging Face Spaces and connects to a FastAPI backend hosted on Render. AI responses are generated using Groq. Cloud RAG retrieves relevant knowledge chunks through SQLite keyword matching and provides source references.
+
+**Note:** Cloud RAG does not currently use vector embeddings. Render Free storage is ephemeral, and the public demo is not a production authentication system.
+
 
 ## Local Installation
 
