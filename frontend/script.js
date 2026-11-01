@@ -168,7 +168,7 @@ async function loadDocuments() {
             item.className = "document-item";
 
             item.textContent =
-                `📄 ${documentInfo.filename} — ${documentInfo.chunks} chunks`;
+                `📄 ${documentInfo.filename} — ${documentInfo.pages} page(s)`;
 
             documentsList.appendChild(item);
         });
@@ -248,6 +248,109 @@ document.querySelector('[data-page="documents"]')
 // -------------------------------------
 // IT Ticket Management
 // -------------------------------------
+
+
+
+// -------------------------------------
+// Cloud RAG - Knowledge Base Q&A
+// -------------------------------------
+
+const ragForm = document.getElementById("rag-question-form");
+const ragQuestion = document.getElementById("rag-question");
+const ragSubmit = document.getElementById("rag-submit");
+const ragStatus = document.getElementById("rag-status");
+const ragResult = document.getElementById("rag-result");
+const ragAnswer = document.getElementById("rag-answer");
+const ragSources = document.getElementById("rag-sources");
+
+ragForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const question = ragQuestion.value.trim();
+
+    if (!question) {
+        ragStatus.textContent = "Please enter a question.";
+        return;
+    }
+
+    ragSubmit.disabled = true;
+    ragSubmit.textContent = "Searching knowledge...";
+    ragStatus.textContent = "Retrieving relevant IT guidance...";
+    ragResult.hidden = true;
+    ragAnswer.replaceChildren();
+    ragSources.replaceChildren();
+
+    try {
+        const response = await fetch(`${API_URL}/rag/chat`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ question })
+        });
+
+        if (!response.ok) {
+            if (response.status === 429) {
+                throw new Error(
+                    "Demo request limit reached. Please try again later."
+                );
+            }
+
+            throw new Error(
+                `Knowledge assistant unavailable (HTTP ${response.status}).`
+            );
+        }
+
+        const data = await response.json();
+
+        ragAnswer.textContent =
+            typeof data.answer === "string"
+                ? data.answer
+                : "No answer was returned.";
+
+        const sources = Array.isArray(data.sources)
+            ? data.sources
+            : [];
+
+        // Deduplicate identical document/page references.
+        const uniqueSources = new Map();
+
+        sources.forEach((source) => {
+            const key = `${source.document_id}:${source.page}`;
+
+            if (!uniqueSources.has(key)) {
+                uniqueSources.set(key, source);
+            }
+        });
+
+        if (uniqueSources.size === 0) {
+            const item = document.createElement("li");
+            item.textContent = "No matching sources found.";
+            ragSources.appendChild(item);
+        } else {
+            uniqueSources.forEach((source) => {
+                const item = document.createElement("li");
+
+                // textContent avoids injecting HTML from API data.
+                item.textContent =
+                    `${source.filename || "Unknown document"}`
+                    + ` — Page ${source.page ?? "N/A"}`;
+
+                ragSources.appendChild(item);
+            });
+        }
+
+        ragResult.hidden = false;
+        ragStatus.textContent = "Answer ready.";
+    } catch (error) {
+        ragStatus.textContent = error.message;
+        console.error("Cloud RAG error:", error);
+    } finally {
+        ragSubmit.disabled = false;
+        ragSubmit.textContent = "Ask Knowledge Base";
+    }
+});
+
 
 const ticketForm = document.getElementById("ticket-form");
 const ticketTitle = document.getElementById("ticket-title");

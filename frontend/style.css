@@ -526,3 +526,109 @@ button:disabled {
     text-align: center;
     white-space: normal;
 }
+
+
+
+
+
+/* -------------------------------------
+   Cloud RAG Knowledge Assistant
+------------------------------------- */
+
+.rag-panel {
+    margin-bottom: 20px;
+}
+
+.rag-description {
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.rag-question-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rag-question-form label {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.rag-question-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    font: inherit;
+    resize: vertical;
+}
+
+.rag-question-form textarea:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.rag-question-form button {
+    align-self: flex-start;
+    padding: 12px 18px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.rag-question-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.rag-status {
+    margin-top: 12px;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.rag-result {
+    margin-top: 18px;
+    padding: 18px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}
+
+.rag-result[hidden] {
+    display: none;
+}
+
+.rag-result h4 {
+    margin: 0 0 12px;
+    color: #f8fafc;
+}
+
+.rag-answer {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #e2e8f0;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.rag-sources {
+    padding-left: 20px;
+    color: #93c5fd;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .rag-question-form button {
+        width: 100%;
+    }
+}

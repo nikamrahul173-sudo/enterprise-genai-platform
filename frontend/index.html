@@ -213,7 +213,47 @@
             <!-- =====================================
                  Knowledge Base Page
             ====================================== -->
-            <section id="documents-page" class="page">
+<section id="documents-page" class="page">
+<!-- Cloud RAG Knowledge Assistant -->
+<div class="documents-panel rag-panel">
+    <h3>Ask the Knowledge Base</h3>
+    <p class="rag-description">
+        Ask a question about indexed IT runbooks.
+        Answers are generated using retrieved knowledge.
+    </p>
+
+    <form id="rag-question-form" class="rag-question-form">
+        <label for="rag-question">Your question</label>
+
+        <textarea
+            id="rag-question"
+            rows="3"
+            maxlength="2000"
+            placeholder="How do I troubleshoot VPN authentication and MFA issues?"
+            required
+        ></textarea>
+
+        <button id="rag-submit" type="submit">
+            Ask Knowledge Base
+        </button>
+    </form>
+
+    <div
+        id="rag-status"
+        class="rag-status"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <div id="rag-result" class="rag-result" hidden>
+        <h4>AI Answer</h4>
+        <div id="rag-answer" class="rag-answer"></div>
+
+        <h4>Sources</h4>
+        <ul id="rag-sources" class="rag-sources"></ul>
+    </div>
+</div>
+
 
                 <div class="page-heading">
                     <h2>Knowledge Base</h2>
