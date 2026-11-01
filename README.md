@@ -250,6 +250,10 @@ IT incident statistics and review tracking.
 ![Dashboard](screenshots/dashboard.png)
 
 
+### Cloud RAG Knowledge Base
+
+![Cloud RAG Knowledge Base](screenshots/cloud-rag-knowledge-base.png)
+
 
 
 
