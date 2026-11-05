@@ -145,3 +145,70 @@ def test_cloud_knowledge_seeds_on_api_startup(
             )
             for item in documents
         )
+
+
+def test_dashboard_returns_review_counts(monkeypatch):
+    monkeypatch.setattr(
+        cloud_main,
+        "list_cloud_tickets",
+        lambda: [
+            {"status": "Open"},
+            {"status": "Resolved"},
+        ],
+    )
+
+    monkeypatch.setattr(
+        cloud_main,
+        "get_review_stats",
+        lambda: {
+            "pending_reviews": 1,
+            "approved_reviews": 1,
+            "rejected_reviews": 0,
+        },
+    )
+
+    client = TestClient(cloud_main.app)
+    response = client.get("/dashboard/stats")
+
+    assert response.status_code == 200
+
+    stats = response.json()
+
+    assert stats["total_tickets"] == 2
+    assert stats["open_tickets"] == 1
+    assert stats["resolved_tickets"] == 1
+    assert stats["pending_reviews"] == 1
+    assert stats["approved_reviews"] == 1
+    assert stats["rejected_reviews"] == 0
+
+
+
+def test_dashboard_with_zero_tickets(monkeypatch):
+    monkeypatch.setattr(
+        cloud_main,
+        "list_cloud_tickets",
+        lambda: [],
+    )
+
+    monkeypatch.setattr(
+        cloud_main,
+        "get_review_stats",
+        lambda: {
+            "pending_reviews": 0,
+            "approved_reviews": 0,
+            "rejected_reviews": 0,
+        },
+    )
+
+    client = TestClient(cloud_main.app)
+    response = client.get("/dashboard/stats")
+
+    assert response.status_code == 200
+
+    stats = response.json()
+
+    assert stats["total_tickets"] == 0
+    assert stats["open_tickets"] == 0
+    assert stats["pending_reviews"] == 0
+    assert stats["approved_reviews"] == 0
+    assert stats["rejected_reviews"] == 0

@@ -244,7 +244,7 @@ document.querySelector('[data-page="documents"]')
     .addEventListener("click", loadDocuments);
 
 
-    
+
 // -------------------------------------
 // IT Ticket Management
 // -------------------------------------
@@ -416,7 +416,7 @@ function displayTicketAnalysis(container, rawAnalysis) {
     container.appendChild(stepsList);
 
 
-    
+
 // -------------------------------------
 // Display flagged risky AI actions
 // -------------------------------------
@@ -522,7 +522,7 @@ async function loadTickets() {
             const analysisContainer = document.createElement("div");
             analysisContainer.className = "ticket-analysis";
 
-           
+
 card.appendChild(title);
 card.appendChild(description);
 card.appendChild(status);
@@ -540,7 +540,7 @@ card.appendChild(reviewPanel);
 const statusPanel = createTicketStatusPanel(ticket);
 card.appendChild(statusPanel);
 
-            
+
 
 
             if (ticket.ai_analysis) {
@@ -566,7 +566,7 @@ card.appendChild(statusPanel);
                         );
                     }
 
-                    
+
 const result = await response.json();
 
 displayTicketAnalysis(
@@ -663,7 +663,7 @@ document.querySelector('[data-page="tickets"]')
 
 
 
-    
+
 /* ==========================================
    ENGINEER REVIEW & APPROVAL WORKFLOW
    ========================================== */
@@ -684,8 +684,10 @@ function createEngineerReviewPanel(ticket) {
 
     const status = document.createElement("p");
     status.textContent =
-        "Review Status: " +
-        (ticket.review_status || "Pending");
+    "Review Status: " +
+    (!ticket.ai_analysis
+        ? "Not Analyzed"
+        : (ticket.review_status || "Pending"));
 
     panel.appendChild(status);
 

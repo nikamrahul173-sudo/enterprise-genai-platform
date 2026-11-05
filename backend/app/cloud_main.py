@@ -238,6 +238,8 @@ def get_ticket_endpoint(ticket_id: int):
 
 # --- Cloud Dashboard Statistics API ---
 
+from backend.app.services.cloud_ticket_compat import get_review_stats
+
 @app.get("/dashboard/stats")
 def cloud_dashboard_stats():
     tickets = list_cloud_tickets()
@@ -253,6 +255,8 @@ def cloud_dashboard_stats():
         status = ticket["status"]
         status_counts[status] = status_counts.get(status, 0) + 1
 
+    review_stats = get_review_stats()
+
     return {
         "total_tickets": len(tickets),
         "open_tickets": status_counts["Open"],
@@ -260,6 +264,7 @@ def cloud_dashboard_stats():
         "resolved_tickets": status_counts["Resolved"],
         "closed_tickets": status_counts["Closed"],
         "tickets_by_status": status_counts,
+        **review_stats,
     }
 
 # --- Cloud Ticket Status Update API ---

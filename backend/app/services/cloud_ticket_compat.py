@@ -122,3 +122,38 @@ def save_review(ticket_id, decision, reviewed_by, notes):
         )
 
     return get_ticket(ticket_id)
+
+
+
+def get_review_stats():
+    """Return aggregate engineer review counts without exposing ticket details."""
+    ensure_columns()
+
+    with connection() as db:
+        rows = db.execute(
+            """
+            SELECT review_status, COUNT(*) AS total
+            FROM cloud_tickets
+            WHERE ai_analysis IS NOT NULL
+              AND TRIM(ai_analysis) != ''
+            GROUP BY review_status
+            """
+        ).fetchall()
+
+    counts = {
+        "pending_reviews": 0,
+        "approved_reviews": 0,
+        "rejected_reviews": 0,
+    }
+
+    for row in rows:
+        status = row["review_status"] or "Pending"
+
+        if status == "Pending":
+            counts["pending_reviews"] += row["total"]
+        elif status == "Approved":
+            counts["approved_reviews"] += row["total"]
+        elif status == "Rejected":
+            counts["rejected_reviews"] += row["total"]
+
+    return counts
